@@ -17,6 +17,7 @@ use std::rc::Rc;
 #[derive(Debug)]
 struct Sun {}
 
+
 #[derive(Debug)]
 enum Planet {
     Mercury(Rc<Sun>),
@@ -60,6 +61,7 @@ fn main() {
     jupiter.details();
 
     // TODO
+    
     let saturn = Planet::Saturn(Rc::new(Sun {}));
     println!("reference count = {}", Rc::strong_count(&sun)); // 7 references
     saturn.details();
