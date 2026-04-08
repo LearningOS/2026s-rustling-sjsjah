@@ -5,8 +5,8 @@
 // Execute `rustlings hint macros3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
+#[macro_use]//引用模块里的宏
 mod macros {
     macro_rules! my_macro {
         () => {

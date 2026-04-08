@@ -11,6 +11,8 @@
 
 use std::num::ParseIntError;
 use std::str::FromStr;
+use std::string::ParseError;
+use std::{error, vec};
 
 #[derive(Debug, PartialEq)]
 struct Person {
@@ -31,7 +33,7 @@ enum ParsePersonError {
     ParseInt(ParseIntError),
 }
 
-// I AM NOT DONE
+
 
 // Steps:
 // 1. If the length of the provided string is 0, an error should be returned
@@ -52,6 +54,31 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.is_empty() { return Err(ParsePersonError::Empty) }
+        let  part:Vec<&str> = s.split(",").collect();
+        
+        if part.len()!=2  //前面转成数组了
+        {return Err(ParsePersonError::BadLen);}
+
+        let name =  part[0];
+        if name.is_empty(){return Err(ParsePersonError::NoName);}
+
+        let age = part[1].parse::<usize>()
+            .map_err(|e| ParsePersonError::ParseInt(e))?;
+        /*
+        map_err 的语法与作用
+        语法结构：
+        Result<T, E1>.map_err(|e| E2) -> Result<T, E2>
+        核心作用：它只处理 Err 情况。
+        如果结果是 Ok(value)，它会直接跳过，什么都不做；
+        如果结果是 Err(error)，它就把原来的错误 E1 丢进你给的闭包里，
+        转换成一个新的错误类型 E2 
+        */
+        Ok(Person{ 
+                name: name.to_string(),
+                age,
+            })
+
     }
 }
 

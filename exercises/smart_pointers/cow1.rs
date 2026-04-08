@@ -12,7 +12,7 @@
 //
 // Execute `rustlings hint cow1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
 
 use std::borrow::Cow;
 
@@ -45,10 +45,12 @@ mod tests {
     #[test]
     fn reference_no_mutation() -> Result<(), &'static str> {
         // No clone occurs because `input` doesn't need to be mutated.
-        let slice = [0, 1, 2];
-        let mut input = Cow::from(&slice[..]);
+        let slice: [i32; 3] = [0, 1, 2];
+        let mut input: Cow<'_, [i32]> = Cow::from(&slice[..]);
         match abs_all(&mut input) {
             // TODO
+            Cow::Borrowed(_)=>Ok(()),
+            _=>Err("Expected borrowed value")
         }
     }
 
@@ -61,18 +63,23 @@ mod tests {
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
             // TODO
+            Cow::Owned(_)=>Ok(()),
+            _=>Err("Expected Owned value"),
+            
         }
     }
 
     #[test]
     fn owned_mutation() -> Result<(), &'static str> {
         // Of course this is also the case if a mutation does occur. In this
-        // case the call to `to_mut()` returns a reference to the same data as
-        // before.
+        // case the call to `to_mut()` returns a reference to the same data asbefore.
         let slice = vec![-1, 0, 1];
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
             // TODO
+            Cow::Owned(_)=>Ok(()),
+            _=>Err("Expected borrowed value")
+
         }
     }
 }

@@ -7,7 +7,7 @@
 // Execute `rustlings hint tests6` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 struct Foo {
     a: u128,
@@ -20,9 +20,17 @@ struct Foo {
 unsafe fn raw_pointer_to_box(ptr: *mut Foo) -> Box<Foo> {
     // SAFETY: The `ptr` contains an owned box of `Foo` by contract. We
     // simply reconstruct the box from that pointer.
-    let mut ret: Box<Foo> = unsafe { ??? };
-    todo!("The rest of the code goes here")
-}
+    /*
+    Box::new(obj)：创建一个 Box（数据在堆上，Rust 自动管理）。
+    Box::into_raw(b)：放弃所有权。它返回一个地址数字 *mut T，此时数据还在堆上，
+    但 Rust 永远不会自动释放它了（这就造成了手动控制的内存）。
+    Box::from_raw(ptr)：重获所有权。Rust 重新拿回管理权。 
+    */
+    let mut ret: Box<Foo> = unsafe { Box::from_raw(ptr) };
+    //todo!("The rest of the code goes here")
+    ret.b = Some("hello".to_owned());
+    ret
+} 
 
 #[cfg(test)]
 mod tests {

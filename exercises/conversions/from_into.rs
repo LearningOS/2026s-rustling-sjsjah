@@ -7,6 +7,8 @@
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a
 // hint.
 
+use std::iter;
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -40,11 +42,41 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+    if s.is_empty(){
+        return Person::default()
     }
+    let mut iter  = s.split(",");
+    let name = match iter.next() {
+        Some(n) if !n.is_empty()=>n.to_string(),
+        _=>return  Person::default()      
+        
+    };
+
+    let age = match iter.next() {
+    
+        Some(n) =>
+        {
+            match n.parse::<usize>() {
+                Ok(a)=>a,
+                Err(_)=>return Person::default()
+            }
+        }
+
+        None=>return Person::default()
+        
+    };
+    if iter.next().is_some() {
+            return Person::default();
+        }
+    Person { name, age }
+
+    }
+
+
 }
 
 fn main() {
